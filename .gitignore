@@ -14,3 +14,6 @@ Thumbs.db
 
 # environment variables
 .env
+
+# Others
+yolov8l-worldv2.pt
