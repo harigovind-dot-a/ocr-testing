@@ -1,0 +1,4 @@
+openai==2.16.0
+pypdf==6.6.2
+python-dotenv==1.2.1
+pdf2image==1.17.0
