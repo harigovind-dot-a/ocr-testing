@@ -62,13 +62,12 @@ PAGES:
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-5.2-pro",
             messages=[
                 {"role": "system", "content": "You are a strict document classification engine."},
                 {"role": "user", "content": prompt}
             ],
             response_format={"type": "json_object"},
-            temperature=0.0
         )
 
         result = json.loads(response.choices[0].message.content)
