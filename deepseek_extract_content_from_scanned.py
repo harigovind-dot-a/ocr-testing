@@ -1,4 +1,3 @@
-# tesseract_extract_na_docs_deepseek.py
 import os
 import json
 from dotenv import load_dotenv
@@ -6,12 +5,9 @@ from openai import OpenAI
 from pdf2image import convert_from_path
 from pypdf import PdfReader, PdfWriter
 from PIL import Image
-
-# DeepSeek / HF imports
 import torch
 from transformers import AutoProcessor, AutoModelForVision2Seq
 
-# Load environment variables
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -20,7 +16,6 @@ OUTPUT_DIR = "./output"
 OUTPUT_FILENAME = "school-text-more-to-do-ocr-tesseract.pdf"
 BATCH_SIZE = 10 
 
-# === DeepSeek model setup ===
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OCR_MODEL_ID = "deepseek-ai/DeepSeek-OCR-2"
 

@@ -6,11 +6,9 @@ from pdf2image import convert_from_path
 from pypdf import PdfReader, PdfWriter
 import pytesseract
 
-# Load environment variables
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# CONFIGURATION
 INPUT_PDF = "./input/school-text-ocr-test.pdf"
 OUTPUT_DIR = "./output"
 OUTPUT_FILENAME = "school-text-more-to-do-ocr-tesseract.pdf"
@@ -21,7 +19,6 @@ def extract_text_from_image(image):
     Uses Tesseract OCR to extract text from a PIL image.
     """
     try:
-        # standard config for block of text
         text = pytesseract.image_to_string(image, lang='eng') 
         return text
     except Exception as e:
@@ -32,13 +29,11 @@ def analyze_text_batch(page_text_map):
     """
     Sends EXTRACTED TEXT (not images) to OpenAI.
     """
-    # Construct a clean text payload for the AI
-    # We create a structured string that clearly delineates pages
     context_str = ""
     for page_num, text in page_text_map.items():
         clean_text = text.replace('\n', ' ').strip()
         # Limit text length per page to avoid token limits if OCR is messy
-        context_str += f"--- PAGE {page_num} START ---\n{clean_text[:3000]}\n--- PAGE {page_num} END ---\n\n"
+        context_str += f"--- PAGE {page_num} START ---\n{clean_text}\n--- PAGE {page_num} END ---\n\n"
 
     system_prompt = (
         "You are a text filter assistant. You will receive OCR text from a textbook. "

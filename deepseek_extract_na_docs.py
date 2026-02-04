@@ -1,4 +1,3 @@
-# tesseract_extract_na_docs_deepseek.py
 import os
 import json
 from dotenv import load_dotenv
@@ -7,28 +6,23 @@ from pdf2image import convert_from_path
 from pypdf import PdfReader, PdfWriter
 from PIL import Image
 
-# DeepSeek / HF imports
 import torch
 from transformers import AutoProcessor, AutoModelForVision2Seq
 
-# Load environment variables
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# === Inputs / config (unchanged from original) ===
 INPUT_PDF = "./input/anyline-sample-scan-book-ocr.pdf"
 OUTPUT_DIR = "./output"
 OUTPUT_FILENAME = "anyline-sample-scan-book-ocr-deepseek.pdf"
 BATCH_SIZE = 10
 
-# === DeepSeek model setup ===
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OCR_MODEL_ID = "deepseek-ai/DeepSeek-OCR-2"
 
 print(f"Loading OCR model {OCR_MODEL_ID} on {DEVICE}... (this may take a minute)")
 try:
     ocr_processor = AutoProcessor.from_pretrained(OCR_MODEL_ID, trust_remote_code=True)
-    # Use float16 on CUDA for memory savings if available; otherwise float32
     model_dtype = torch.float16 if DEVICE == "cuda" else torch.float32
     ocr_model = AutoModelForVision2Seq.from_pretrained(
         OCR_MODEL_ID,
@@ -45,7 +39,6 @@ def ocr_image(image: Image.Image) -> str:
     Runs DeepSeek-OCR-2 on a PIL image and returns extracted text.
     This replaces the previous pytesseract.image_to_string call.
     """
-    # Ensure RGB
     if image.mode != "RGB":
         image = image.convert("RGB")
 

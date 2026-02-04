@@ -7,7 +7,6 @@ from pypdf import PdfReader, PdfWriter
 import pytesseract
 from PIL import Image
 
-# Load environment variables
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -34,7 +33,7 @@ def analyze_batch(ocr_texts, start_page_num):
     for i, text in enumerate(ocr_texts):
         page_no = start_page_num + i
         pages_block.append(
-            f"\n--- PAGE {page_no} ---\n{text.strip()[:4000]}"
+            f"\n--- PAGE {page_no} ---\n{text.strip()}"
         )
 
     prompt = f"""

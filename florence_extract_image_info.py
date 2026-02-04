@@ -2,27 +2,20 @@ import torch
 from pdf2image import convert_from_path
 from transformers import AutoProcessor, AutoModelForCausalLM
 
-# --- CONFIGURATION ---
 INPUT_PDF = "./input/school-text-ocr-test.pdf"
-# Set this to 0 if the First Page of PDF is "Page 1". 
-# Set to 1 if you want to skip a cover page, etc.
 PAGE_OFFSET = 0 
 
-# Keywords to look for in the AI's description
 TARGET_KEYWORDS = ["tree", "hill", "mountain", "house", "building", "home", "cottage"]
 
 def main():
     print("1. Loading Florence-2 Model (Microsoft's best document VLM)...")
-    # We use the 'base' model which is faster/smaller but still very smart
     model_id = 'microsoft/Florence-2-base'
     
-    # Load model (trust_remote_code is required for Florence-2)
     model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True, attn_implementation="eager")
     processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
 
     print(f"2. Converting PDF to images...")
     try:
-        # 200 DPI is perfect for Florence-2
         images = convert_from_path(INPUT_PDF, dpi=200)
     except Exception as e:
         print(f"Error converting PDF: {e}")
